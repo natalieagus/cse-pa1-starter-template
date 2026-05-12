@@ -5,3 +5,5 @@ bin/
 .DS_Store
 archive/
 cseshell
+tests/unit/bin
+tests/integration/bin
