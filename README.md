@@ -77,7 +77,8 @@ Contains all the necessary source code for the shell and system programs. It is 
 This project ships with two layers of tests:
 
 - **Unit tests** in `tests/unit/`. Small C programs that exercise pure helper functions directly, using the Unity framework. You can create any matching `test_foo.c` under `tests/unit` to test any libs under `source/libs/foo.c` by including the matching `source/libs/foo.h` header file in the unit test. See `tests/unit/test_perms.c` (or `test_rc_parser.c`) for example.
-- **Integration tests** in `tests/integration/`. Bash scripts that run the compiled `./cseshell` as a subprocess, feed it stdin, and check stdout.
+- **Integration tests** in `tests/integration/`. Bash scripts that run the compiled `./cseshell` as a subprocess, feed it `stdin`, and check `stdout`.
+  - You should create your own integration tests. These samples given are just samples, adjust it accordingly.
 
 Run all tests:
 
