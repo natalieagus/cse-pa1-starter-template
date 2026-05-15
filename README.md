@@ -17,6 +17,7 @@ The project is organized as follows:
   - `ss.png` - An image file.
 - `makefile` - Makefile for building the CSEShell and system programs.
 - `source/` - Source code for the shell and system programs.
+  - `libs/` - Contain matching `foo.h` and `foo.c` helper functions, unit-testable.
   - `shell.c` and `shell.h` - Source and header files for the shell.
   - `system_programs/` - Source code and header for the system programs.
 - `tests/` - Unit and integration tests.
@@ -75,7 +76,7 @@ Contains all the necessary source code for the shell and system programs. It is 
 
 This project ships with two layers of tests:
 
-- **Unit tests** in `tests/unit/`. Small C programs that exercise pure helper functions directly, using the Unity framework. Each test binary is a single `.c` file plus `tests/unity/unity.c`.
+- **Unit tests** in `tests/unit/`. Small C programs that exercise pure helper functions directly, using the Unity framework. You can create any matching `test_foo.c` under `tests/unit` to test any libs under `source/libs/foo.c` by including the matching `source/libs/foo.h` header file in the unit test. See `tests/unit/test_perms.c` (or `test_rc_parser.c`) for example.
 - **Integration tests** in `tests/integration/`. Bash scripts that run the compiled `./cseshell` as a subprocess, feed it stdin, and check stdout.
 
 Run all tests:
