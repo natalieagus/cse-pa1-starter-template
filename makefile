@@ -3,6 +3,7 @@ SRC_DIR = ./source/system_programs
 BIN_DIR = ./bin
 LIB_DIR = ./source/libs
 LIB_SOURCES = $(wildcard $(LIB_DIR)/*.c)
+CFLAGS = -I./source/libs -Wall -Wextra
 SOURCES = $(wildcard $(SRC_DIR)/*.c)
 OBJECTS = $(SOURCES:$(SRC_DIR)/%.c=$(BIN_DIR)/%)
 MAIN_SRC = ./source/shell.c # add more source files here
@@ -34,7 +35,7 @@ all: $(OBJECTS) $(MAIN_EXEC)
 
 $(BIN_DIR)/%: $(SRC_DIR)/%.c $(LIB_SOURCES)
 	@mkdir -p $(BIN_DIR)
-	$(CC) $^ -o $@
+	$(CC) $(CFLAGS) $^ -o $@
 
 # $< refers to the first dependency, here it is ./source/shell.c
 # if you have more dependencies, use $^ instead
