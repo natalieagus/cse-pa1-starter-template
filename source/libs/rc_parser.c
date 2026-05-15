@@ -19,7 +19,8 @@
 #include <ctype.h>
 #include <string.h>
 
-rc_line_type_t classify_rc_line(const char *line, const char **value) {
+rc_line_type_t classify_rc_line(const char *line, const char **value)
+{
     /* TODO: implement this function per the contract in rc_parser.h. */
     (void)line;
     *value = NULL;

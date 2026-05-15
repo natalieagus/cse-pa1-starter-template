@@ -1,6 +1,8 @@
 CC = gcc
 SRC_DIR = ./source/system_programs
 BIN_DIR = ./bin
+LIB_DIR = ./source/libs
+LIB_SOURCES = $(wildcard $(LIB_DIR)/*.c)
 SOURCES = $(wildcard $(SRC_DIR)/*.c)
 OBJECTS = $(SOURCES:$(SRC_DIR)/%.c=$(BIN_DIR)/%)
 MAIN_SRC = ./source/shell.c # add more source files here
@@ -19,9 +21,9 @@ UNIT_BIN_DIR = $(UNIT_DIR)/bin
 UNIT_SOURCES = $(wildcard $(UNIT_DIR)/test_*.c)
 UNIT_BINS = $(UNIT_SOURCES:$(UNIT_DIR)/%.c=$(UNIT_BIN_DIR)/%)
 
-# -I./source so tests can #include "rc_parser.h" etc.
+# -I./source/libs so tests can #include "rc_parser.h" etc.
 # -I$(UNITY_DIR) so tests can #include "unity.h".
-TEST_CFLAGS = -I./source -I$(UNITY_DIR) -Wall -Wextra
+TEST_CFLAGS = -I./source/libs -I$(UNITY_DIR) -Wall -Wextra
 
 # ----------------------------------------------------------------------
 # Build targets (existing)
@@ -30,30 +32,33 @@ TEST_CFLAGS = -I./source -I$(UNITY_DIR) -Wall -Wextra
 # Special rule for main executable
 all: $(OBJECTS) $(MAIN_EXEC)
 
-$(BIN_DIR)/%: $(SRC_DIR)/%.c
+$(BIN_DIR)/%: $(SRC_DIR)/%.c $(LIB_SOURCES)
 	@mkdir -p $(BIN_DIR)
-	$(CC) $< -o $@
+	$(CC) $^ -o $@
 
 # $< refers to the first dependency, here it is ./source/shell.c
 # if you have more dependencies, use $^ instead
 # $@: This variable represents the target of the rule
 # It is the filename of the file that is being generated or updated by the rule, e.g: MAIN_EXEC (cseshell)
-$(MAIN_EXEC): $(MAIN_SRC)
-	$(CC) $< -o $@
+$(MAIN_EXEC): $(MAIN_SRC) $(LIB_SOURCES)
+	$(CC) $^ -o $@
 
 # ----------------------------------------------------------------------
 # Test targets (added for PA1 testing)
 # ----------------------------------------------------------------------
 
 # Naming convention: tests/unit/test_FOO.c is compiled together with
-# source/FOO.c and tests/unity/unity.c into tests/unit/bin/test_FOO.
+# source/libs/FOO.c and tests/unity/unity.c into tests/unit/bin/test_FOO.
 #
 # If your helper needs additional source files, set EXTRA_SRC on the
 # per-target line, for example:
 #
-#   $(UNIT_BIN_DIR)/test_complex: EXTRA_SRC = ./source/extra.c
+#   $(UNIT_BIN_DIR)/test_complex: EXTRA_SRC = ./source/libs/extra.c
 #
-$(UNIT_BIN_DIR)/test_%: $(UNIT_DIR)/test_%.c $(UNITY_DIR)/unity.c ./source/%.c
+# Unit tests are compiled with all reusable library code under source/libs/.
+# This lets tests include headers from source/libs/ and link against the
+# corresponding implementations.
+$(UNIT_BIN_DIR)/test_%: $(UNIT_DIR)/test_%.c $(UNITY_DIR)/unity.c $(LIB_SOURCES)
 	@mkdir -p $(UNIT_BIN_DIR)
 	$(CC) $(TEST_CFLAGS) $^ $(EXTRA_SRC) -o $@
 
