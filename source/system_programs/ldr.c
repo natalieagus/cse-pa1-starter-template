@@ -1,5 +1,5 @@
 #include "system_program.h"
-#include "perms.h"
+#include "libs/perms.h"
 
 void print_path_with_colored_slash(const char *path)
 {

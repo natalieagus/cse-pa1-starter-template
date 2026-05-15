@@ -14,7 +14,7 @@
  * This file is OPTIONAL. See the comment at the top of rc_parser.h.
  */
 
-#include "rc_parser.h"
+#include "libs/rc_parser.h"
 
 #include <ctype.h>
 #include <string.h>
