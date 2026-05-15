@@ -68,7 +68,7 @@ unit: $(UNIT_BINS)
 	echo "Unit tests: $$pass passed, $$fail failed"; \
 	test $$fail -eq 0
 
-integration: $(MAIN_EXEC) $(OBJECTS)
+integration: $(MAIN_EXEC) $(SYSTEM_PROGRAM_BINS)
 	@echo "==> Running integration tests"
 	@pass=0; fail=0; \
 	for s in $(INTEGRATION_DIR)/*.sh; do \
@@ -92,7 +92,8 @@ ai-unit-tests:
 	@bash ./scripts/gen_unit_tests.sh $(MODULE)
 
 clean:
-	rm -f $(OBJECTS) $(MAIN_EXEC)
+clean:
+	rm -f $(SYSTEM_PROGRAM_BINS) $(MAIN_EXEC)
 	rm -rf $(UNIT_BIN_DIR)
 
 .PHONY: all clean unit integration test ai-unit-tests
